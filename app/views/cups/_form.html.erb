@@ -1,0 +1,17 @@
+<%= form_for(@cup) do |f| %>
+  <% if @cup.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@cup.errors.count, "error") %> prohibited this cup from being saved:</h2>
+
+      <ul>
+      <% @cup.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
