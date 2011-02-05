@@ -8,14 +8,14 @@
 
 <script language="javascript" type="text/javascript">
   function draw_caffeine_plot(cups){
-    var caffeine = [];
+    var consumed = [];
     var current = 0;
     for(i in cups){
       current++;
-      caffeine.push([cups[i].int_time,current]);
+      consumed.push([cups[i].int_time,current]);
     }
 
-    $.plot($("#plot"), [caffeine]);
+    $.plot($("#plot"), [consumed]);
   }
   $.getJSON('/cups.json', draw_caffeine_plot);
 </script>

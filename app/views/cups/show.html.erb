@@ -1,4 +1,8 @@
 <p id="notice"><%= notice %></p>
+<h1>Cup <%= @cup.id %></h1>
+<p>
+Consumed at <%= @cup.created_at %> (<%= time_ago_in_words(@cup.created_at) %> ago)
+</p>
 
 
 <%= link_to 'Edit', edit_cup_path(@cup) %> |
