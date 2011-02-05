@@ -8,10 +8,11 @@
 
 <script language="javascript" type="text/javascript">
   function draw_caffeine_plot(cups){
-    var caffeine = [[0,0]];
+    var caffeine = [];
     var current = 0;
-    for(cup in cups){
-      caffeine.push([cup['created_at'], current += 1 ]);    
+    for(i in cups){
+      current++;
+      caffeine.push([cups[i].int_time,current]);
     }
 
     $.plot($("#plot"), [caffeine]);
