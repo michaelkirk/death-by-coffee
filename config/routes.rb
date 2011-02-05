@@ -1,6 +1,9 @@
 Dbc::Application.routes.draw do
   resources :cups
 
+  match 'plots' => 'plots#index'
+  match 'plots/collective' => 'plots#collective'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
