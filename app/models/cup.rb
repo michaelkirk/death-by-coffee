@@ -4,6 +4,7 @@ class Cup < ActiveRecord::Base
   end
 
   def milliseconds
-    created_at.to_i * 1000
+    central_timezone_offset = 6 * 60 * 60
+    (created_at.to_i - central_timezone_offset) * 1000
   end
 end
