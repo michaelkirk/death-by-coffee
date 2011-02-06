@@ -1,9 +1,9 @@
 class Cup < ActiveRecord::Base
   def as_json(params={})
-    super(params.merge({:methods => :int_time}))
+    super(params.merge({:methods => :milliseconds}))
   end
 
-  def int_time
-    created_at.to_i
+  def milliseconds
+    created_at.to_i * 1000
   end
 end
