@@ -59,6 +59,7 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
     //initialize caffeine level just before first cup
     var previous_level = 0;
     var first_time = cups[0].milliseconds;
+    var display_fatal_dose = false;
     for(i=0; i < cups.length; i++){
       var time = cups[i].milliseconds;
       var next_cup = cups[i+1];
@@ -76,6 +77,9 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
       //bump caffeine level
       var caffeine_dose = 150; //mg of caffeine in a cup of coffee
       var caffeine_level = previous_level + caffeine_dose;
+      if (caffeine_level > 2000){
+        display_fatal_dose = true;
+      }
       previous_level = caffeine_level;
       caffeine.push([time,caffeine_level]);
       consumed.push([time, caffeine_level]);
@@ -93,16 +97,19 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
     var severe_toxicity = [[first_time, 750], [last_time, 750]];
     var fatal_dose = [[first_time, 3000], [last_time, 3000]];
 
+    var plots =[{label: "cups drank", 
+                 data: consumed, 
+                 points: {show: true, clickable: true},
+                 lines: {show: false}},
+               {label: "mg of caffeine in your body", data: caffeine},
+               {label: "severe toxicity", data: severe_toxicity},
+               {label: "unpleasant symptoms", data: unpleasant_symptoms}];
+
+    if(display_fatal_dose){
+      plots.push({label: "fatal dose", data: fatal_dose})
+    }
     $.plot($("#plot"), 
-        [{label: "cups drank", 
-           data: consumed, 
-           points: {show: true, clickable: true},
-           lines: {show: false}},
-           {label: "mg of caffeine in your body", data: caffeine},
-           {label: "severe toxicity", data: severe_toxicity},
-           {label: "unpleasant symptoms", data: unpleasant_symptoms},
-           {label: "fatal dose", data: fatal_dose}
-           ], 
+        plots, 
         {xaxis: {
           mode: "time", 
           label: "Time (UTC)",
