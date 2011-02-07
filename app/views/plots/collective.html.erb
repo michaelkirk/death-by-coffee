@@ -3,7 +3,28 @@
 A plot of our collective caffeine level.
 </p>
 
-<%= link_to "DRINK ANOTHER CUP???", new_cup_path  %>
+<style type="text/css">
+  form.button_to[action="/cups"] {
+    border: solid black 4px;
+    height: 200px;
+    width: 300px;
+    float: right;
+  }
+  form.button_to[action="/cups"] div{
+    text-align: center;
+  }
+
+  form.button_to[action="/cups"] input[type="submit"]{
+    cursor: pointer;
+    background-image: url('/images/300px-A_small_cup_of_coffee.JPG');
+    height: 200px;
+    width: 300px;
+    border: none;
+    color: #FFFF55;
+    font-size: 30px;
+  }
+</style>
+<%= button_to("Drink another cup!", :action => 'create', :controller => 'cups') %>
 
 <div id="plot" style="width:600px;height:300px;">
 </div>
