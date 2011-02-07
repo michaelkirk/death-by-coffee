@@ -28,9 +28,13 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
     //approx half life of caffeine
     var half_life = 18000000; 
 
+    var now = Date.now() - 6 * 60 * 60 * 1000;
+
     //initialize caffeine level just before first cup
     var previous_level = 0;
+    var caffeine_level = 0;
     var first_time = cups[0].milliseconds;
+    var caffeine_dose = 150; //mg of caffeine in a cup of coffee
 
     // we will only display dose lines
     // if the caffeine level is relevantly high
@@ -50,10 +54,11 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
         next_time = next_cup.milliseconds;
       }
 
-      
       //bump caffeine level
-      var caffeine_dose = 150; //mg of caffeine in a cup of coffee
-      var caffeine_level = previous_level + caffeine_dose;
+      caffeine_level = caffeine_level + caffeine_dose;
+      consumed.push([time, caffeine_level]);
+
+      //toggle relevant lines
       if (caffeine_level > 500){
         display_severe_toxicity = true;
       }
@@ -61,22 +66,27 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
         display_fatal_dose = true;
       }
 
-      previous_level = caffeine_level;
-      caffeine.push([time,caffeine_level]);
-      consumed.push([time, caffeine_level]);
-      // fill in caffeine level between events
+
+      // fill in caffeine level piecewise between events
       var range = next_time - time;
       var step_count = 30; //points calculated between events
       var step_size = range / step_count;
-      for(var t = time + step_size; t < next_time; t = t + step_size){
-        previous_level = caffeine_level * Math.pow(1/2, ((t - time) / half_life ));
-        caffeine.push([t, previous_level]);
+
+      //use previous level as base for piecewise function
+      previous_level = caffeine_level;
+      for(var t = time; t < next_time; t = t + step_size){
+        caffeine_level = previous_level * Math.pow(1/2, ((t - time) / half_life ));
+        caffeine.push([t, caffeine_level]);
+
+        // if we're at the step just before "now"
+        if(t <= now && (t+step_size) > now){
+          var current_level = previous_level * Math.pow(1/2, ((now - time) / half_life ));
+          var now_series =[[now, current_level]];
+        }
       }
     }
 
     var unpleasant_symptoms = [[first_time, 200], [last_time, 200]];
-    var severe_toxicity = [[first_time, 750], [last_time, 750]];
-    var fatal_dose = [[first_time, 3000], [last_time, 3000]];
 
     var plots =[{data: consumed, 
                  points: {show: true, clickable: true},
@@ -85,10 +95,15 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
                {label: "unpleasant symptoms", data: unpleasant_symptoms}];
 
     if(display_severe_toxicity){
+      var severe_toxicity = [[first_time, 750], [last_time, 750]];
       plots.push({label: "severe toxicity", data: severe_toxicity})
     }
     if(display_fatal_dose){
+      var fatal_dose = [[first_time, 3000], [last_time, 3000]];
       plots.push({label: "potentially fatal dose (be careful!)", data: fatal_dose})
+    }
+    if(now_series){ //won't display if we're viewing data too far in the past.
+      plots.push({label: "right now", data: now_series, points: {show: true, radius: 5}})
     }
 
     $.plot($("#plot"), 
