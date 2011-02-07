@@ -2,6 +2,8 @@ class Cup < ActiveRecord::Base
 
   default_scope order('created_at')
 
+  validates_presence_of :drank_by
+
   def as_json(params={})
     super(params.merge({:methods => :milliseconds}))
   end

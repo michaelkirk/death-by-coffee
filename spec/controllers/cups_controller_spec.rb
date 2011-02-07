@@ -50,10 +50,10 @@ describe CupsController do
         assigns(:cup).should be(mock_cup)
       end
 
-      it "redirects to the created cup" do
-        Cup.stub(:new) { mock_cup(:save => true) }
-        post :create, :cup => {}
-        response.should redirect_to(cup_url(mock_cup))
+      it "redirects to the created cup's user plot" do
+        Cup.stub(:new) { mock_cup(:drank_by => :somebody, :save => true) }
+        post :create, :cup => {:drank_by => :somebody}
+        response.should redirect_to(user_plot_url(:drank_by => :somebody))
       end
     end
 
