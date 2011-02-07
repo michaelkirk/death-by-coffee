@@ -3,6 +3,8 @@
 A plot of our collective caffeine level.
 </p>
 
+<%= link_to "DRINK ANOTHER CUP???", new_cup_path  %>
+
 <div id="plot" style="width:600px;height:300px;">
 </div>
 
@@ -76,7 +78,7 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
            lines: {show: false}},
            {label: "mg of caffeine in your body", data: caffeine},
            {label: "severe toxicity", data: severe_toxicity},
-           {label: "unpleasant symptoms set in", data: unpleasant_symptoms}
+           {label: "unpleasant symptoms", data: unpleasant_symptoms}
            ], 
         {xaxis: {
           mode: "time", 

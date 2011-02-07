@@ -44,7 +44,7 @@ class CupsController < ApplicationController
 
     respond_to do |format|
       if @cup.save
-        format.html { redirect_to(@cup, :notice => 'Cup was successfully created.') }
+        format.html { redirect_to('/plots/collective', :notice => 'Cup was successfully created.') }
         format.json  { render :json => @cup, :status => :created, :location => @cup }
       else
         format.html { render :action => "new" }
