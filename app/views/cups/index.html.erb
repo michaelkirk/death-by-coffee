@@ -4,6 +4,7 @@
   <tr>
     <th>Consumed</th>
     <th>Memo</th>
+    <th>Drank by</th>
     <th></th>
     <th></th>
     <th></th>
@@ -13,6 +14,7 @@
   <tr>
     <td><%= cup.created_at %></td>
     <td><%= cup.memo %></td>
+    <td><%= cup.drank_by %></td>
     <td><%= link_to 'Show', cup %></td>
     <td><%= link_to 'Edit', edit_cup_path(cup) %></td>
     <td><%= link_to 'Destroy', cup, :confirm => 'Are you sure?', :method => :delete %></td>
