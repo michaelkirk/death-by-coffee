@@ -1,0 +1,93 @@
+<div id="plot" style="width:600px;height:300px;">
+</div>
+
+<div class="block-quote">
+  <p class="source">
+    From <a href="http://www.erowid.org/chemicals/caffeine/">the vaults of erowid</a>:
+  </p>
+
+<p>
+Caffeine doses of 200 mg or higher can cause <strong>unpleasant symptoms</strong> including nausea, headache, and irregular heartbeat, while dose of 750 - 1000 mg can cause <strong>severe toxic symptoms</strong>. Severe caffeine intoxication can result in nausea, vomiting, anxiety, tremor, seizures, tachycardia, dysrhythmias, hypotension, hypokalemia, and metabolic acidosis.
+</p>
+<p>
+Several fatalities resulting from caffeine overdose have been documented, but they are extremely rare relative to its widespread use. In the case of a massive caffeine overdose, vomiting often protects against fatal poisoning, but some deaths have still resulted. 
+</p>
+<p>
+Fatal dose range in humans is believed to be between 3 - 20 grams, approximately the amount of caffeine found in 20 - 130 cups of drip coffee or 15-100 common caffeine tablets (200 mg each). Blood caffeine levels greater than 80 ug/mL have been associated with death, but data is limited. It is difficult to ingest such high levels of caffeine accidentally, and many of the documented fatalities appear to be suicide attempts involving the ingestion of a large number of caffeine pills.
+</p>
+</div>
+
+<script language="javascript" type="text/javascript">
+  function draw_caffeine_plot(cups){
+    //details on consumption
+    var consumed = [];
+    var cupcount = 0;
+
+    //time indexed caffeine level
+    var caffeine = [];
+    var half_life = 18000000; //approx half life of caffeine
+
+    //initialize caffeine level just before first cup
+    var previous_level = 0;
+    var first_time = cups[0].milliseconds;
+    var display_fatal_dose = false;
+    for(i=0; i < cups.length; i++){
+      var time = cups[i].milliseconds;
+      var next_cup = cups[i+1];
+      var next_time = null;
+
+      if(next_cup == undefined){
+        //if this is the last cup, extrapolote 20 hours into the future
+        next_time = time + half_life * 4;
+        var last_time = next_time;
+      } else { //if there is a next cup extrapolote to it
+        next_time = next_cup.milliseconds;
+      }
+
+      
+      //bump caffeine level
+      var caffeine_dose = 150; //mg of caffeine in a cup of coffee
+      var caffeine_level = previous_level + caffeine_dose;
+      if (caffeine_level > 2000){
+        display_fatal_dose = true;
+      }
+      previous_level = caffeine_level;
+      caffeine.push([time,caffeine_level]);
+      consumed.push([time, caffeine_level]);
+      // fill in caffeine level between events
+      var range = next_time - time;
+      var step_count = 30; //points calculated between events
+      var step_size = range / step_count;
+      for(var t = time + step_size; t < next_time; t = t + step_size){
+        previous_level = caffeine_level * Math.pow(1/2, ((t - time) / half_life ));
+        caffeine.push([t, previous_level]);
+      }
+    }
+
+    var unpleasant_symptoms = [[first_time, 200], [last_time, 200]];
+    var severe_toxicity = [[first_time, 750], [last_time, 750]];
+    var fatal_dose = [[first_time, 3000], [last_time, 3000]];
+
+    var plots =[{label: "cups drank", 
+                 data: consumed, 
+                 points: {show: true, clickable: true},
+                 lines: {show: false}},
+               {label: "mg of caffeine in your body", data: caffeine},
+               {label: "severe toxicity", data: severe_toxicity},
+               {label: "unpleasant symptoms", data: unpleasant_symptoms}];
+
+    if(display_fatal_dose){
+      plots.push({label: "fatal dose", data: fatal_dose})
+    }
+    $.plot($("#plot"), 
+        plots, 
+        {xaxis: {
+          mode: "time", 
+          label: "Time (UTC)",
+          timeformat: "%y/%m/%d %h%P"},
+         grid: {
+          clickable: true}});
+  }
+  $.getJSON('<%= @cups_url %>', draw_caffeine_plot);
+</script>
+

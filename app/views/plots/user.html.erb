@@ -1,0 +1,32 @@
+<h1><%= params[:drank_by] %>'s plot</h1>
+<p>
+A plot of <%= params[:drank_by] %>'s caffeine level.
+</p>
+<style type="text/css">
+  form.button_to[action^="/cups"] {
+    border: solid black 4px;
+    height: 200px;
+    width: 300px;
+    float: right;
+  }
+  form.button_to[action^="/cups"] div{
+    text-align: center;
+  }
+
+  form.button_to[action^="/cups"] input[type="submit"]{
+    cursor: pointer;
+    background-image: url('/images/300px-A_small_cup_of_coffee.JPG');
+    height: 200px;
+    width: 300px;
+    border: none;
+    color: #FFFF00;
+    font-size: 30px;
+    font-weight: 700;
+    white-space: normal;
+  }
+</style>
+<%= button_to("Drink another cup #{params[:drank_by]}!", { :action => 'create', :cup => {:drank_by => params[:drank_by]}, :controller => 'cups'}) %>
+
+
+<%= render :partial => 'plot' %>
+
