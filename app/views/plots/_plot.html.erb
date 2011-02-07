@@ -19,18 +19,24 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
 
 <script language="javascript" type="text/javascript">
   function draw_caffeine_plot(cups){
-    //details on consumption
+    //points marking each coffee consumption
     var consumed = [];
-    var cupcount = 0;
 
-    //time indexed caffeine level
+    //time (milliseconds from epoch) indexed caffeine level
     var caffeine = [];
-    var half_life = 18000000; //approx half life of caffeine
+
+    //approx half life of caffeine
+    var half_life = 18000000; 
 
     //initialize caffeine level just before first cup
     var previous_level = 0;
     var first_time = cups[0].milliseconds;
+
+    // we will only display dose lines
+    // if the caffeine level is relevantly high
     var display_fatal_dose = false;
+    var display_severe_toxicity = false;
+
     for(i=0; i < cups.length; i++){
       var time = cups[i].milliseconds;
       var next_cup = cups[i+1];
@@ -76,7 +82,7 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
                {label: "unpleasant symptoms", data: unpleasant_symptoms}];
 
     if(display_fatal_dose){
-      plots.push({label: "fatal dose", data: fatal_dose})
+      plots.push({label: "potentially fatal dose (be careful!)", data: fatal_dose})
     }
     $.plot($("#plot"), 
         plots, 
