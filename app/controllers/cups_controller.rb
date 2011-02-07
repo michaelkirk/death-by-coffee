@@ -2,7 +2,11 @@ class CupsController < ApplicationController
   # GET /cups
   # GET /cups.json
   def index
-    @cups = Cup.all
+    if(params[:drank_by])
+      @cups = Cup.where(:drank_by => params[:drank_by])
+    else
+      @cups = Cup.all
+    end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -44,7 +48,7 @@ class CupsController < ApplicationController
 
     respond_to do |format|
       if @cup.save
-        format.html { redirect_to('/plots/collective', :notice => 'Cup was successfully created.') }
+        format.html { redirect_to(user_plot_path(:drank_by=>@cup.drank_by), :notice => 'Cup was successfully created.') }
         format.json  { render :json => @cup, :status => :created, :location => @cup }
       else
         format.html { render :action => "new" }

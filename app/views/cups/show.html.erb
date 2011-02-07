@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 <h1>Cup <%= @cup.id %></h1>
 <p>
-Consumed at <%= @cup.created_at %> (<%= time_ago_in_words(@cup.created_at) %> ago)
+Consumed <%= time_ago_in_words(@cup.created_at) %> ago by <%= @cup.drank_by %>.
 </p>
 
 <% if @cup.memo %>

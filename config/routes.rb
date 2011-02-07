@@ -3,6 +3,7 @@ Dbc::Application.routes.draw do
 
   match 'plots' => 'plots#index'
   match 'plots/collective' => 'plots#collective'
+  match ':drank_by' => 'plots#user', :as => :user_plot
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
