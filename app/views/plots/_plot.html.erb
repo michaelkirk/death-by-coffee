@@ -71,7 +71,6 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
       var range = next_time - time;
       var step_count = 30; //points calculated between events
       var step_size = range / step_count;
-
       //use previous level as base for piecewise function
       previous_level = caffeine_level;
       for(var t = time; t <= next_time; t = t + step_size){
@@ -79,12 +78,10 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
         caffeine.push([t, caffeine_level]);
 
         // if we're at the step just before "now"
-        if(t <= now && (t+step_size) > now){
-          var current_level = previous_level * Math.pow(1/2, ((now - time) / half_life ));
-          var now_series =[[now, current_level]];
-        }
       }
     }
+    var current_level = previous_level * Math.pow(1/2, ((now - time) / half_life ));
+    var now_series = [[now, current_level]];
 
     var unpleasant_symptoms = [[first_time, 200], [last_time, 200]];
 
