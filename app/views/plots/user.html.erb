@@ -1,7 +1,3 @@
-<h1><%= params[:drank_by] %>'s plot</h1>
-<p>
-A plot of <%= params[:drank_by] %>'s caffeine level.
-</p>
 <style type="text/css">
   form.button_to[action^="/cups"] {
     border: solid black 4px;
@@ -27,6 +23,10 @@ A plot of <%= params[:drank_by] %>'s caffeine level.
 </style>
 <%= button_to("Drink another cup #{params[:drank_by]}!", { :action => 'create', :cup => {:drank_by => params[:drank_by]}, :controller => 'cups'}) %>
 
+<h1><%= params[:drank_by] %>'s plot</h1>
+<p>
+A plot of <%= params[:drank_by] %>'s caffeine level.
+</p>
 
 <%= render :partial => 'plot' %>
 

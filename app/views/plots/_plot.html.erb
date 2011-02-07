@@ -1,4 +1,4 @@
-<div id="plot" style="width:600px;height:300px;">
+<div id="plot" style="width:100%;height:500px;clear: both;">
 </div>
 
 <div class="block-quote">
@@ -86,7 +86,9 @@ Fatal dose range in humans is believed to be between 3 - 20 grams, approximately
           label: "Time (UTC)",
           timeformat: "%y/%m/%d %h%P"},
          grid: {
-          clickable: true}});
+          clickable: true},
+         legend: {
+          position: 'nw'}});
   }
   $.getJSON('<%= @cups_url %>', draw_caffeine_plot);
 </script>
