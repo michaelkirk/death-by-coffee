@@ -4,6 +4,12 @@
 Consumed at <%= @cup.created_at %> (<%= time_ago_in_words(@cup.created_at) %> ago)
 </p>
 
+<% if @cup.memo %>
+<p><strong>memo:</strong>
+<%= @cup.memo %>
+</p>
+<% end %>
+
 
 <%= link_to 'Edit', edit_cup_path(@cup) %> |
 <%= link_to 'Back', cups_path %>

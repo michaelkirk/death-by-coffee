@@ -3,6 +3,7 @@
 <table>
   <tr>
     <th>Consumed</th>
+    <th>Memo</th>
     <th></th>
     <th></th>
     <th></th>
@@ -11,6 +12,7 @@
 <% @cups.each do |cup| %>
   <tr>
     <td><%= cup.created_at %></td>
+    <td><%= cup.memo %></td>
     <td><%= link_to 'Show', cup %></td>
     <td><%= link_to 'Edit', edit_cup_path(cup) %></td>
     <td><%= link_to 'Destroy', cup, :confirm => 'Are you sure?', :method => :delete %></td>
