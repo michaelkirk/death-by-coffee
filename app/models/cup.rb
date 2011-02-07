@@ -1,4 +1,7 @@
 class Cup < ActiveRecord::Base
+
+  default_scope order('created_at')
+
   def as_json(params={})
     super(params.merge({:methods => :milliseconds}))
   end
